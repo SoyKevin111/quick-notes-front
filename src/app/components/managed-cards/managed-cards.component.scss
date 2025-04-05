@@ -1,0 +1,19 @@
+.containerCard-sub {
+	overflow-y: auto; /* Permite el desplazamiento vertical cuando sea necesario */
+	scroll-behavior: smooth; /* Desplazamiento suave */
+	scrollbar-width: thin; /* Scroll minimalista en navegadores Firefox */
+	scrollbar-color: rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0); /* Color del scroll en Firefox: un color suave */
+}
+
+.containerCard-sub::-webkit-scrollbar {
+	width: 8px; /* Ancho del scrollbar para navegadores Webkit (Chrome, Safari, Edge) */
+}
+
+.containerCard-sub::-webkit-scrollbar-thumb {
+	background-color: rgba(0, 0, 0, 0.2); /* Color del thumb (parte deslizante) del scrollbar */
+	border-radius: 10px; /* Bordes redondeados para el thumb */
+}
+
+.containerCard-sub::-webkit-scrollbar-track {
+	background: transparent; /* Fondo transparente para la pista del scrollbar */
+}
