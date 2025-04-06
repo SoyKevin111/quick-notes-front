@@ -2,15 +2,9 @@
 	<div class="containerCard bg-gray-200 h-full w-[80%] py-[2rem]">
 		<div class="containerCard-sub w-full h-full">
 			<ul class="cardList flex flex-col gap-4 items-center">
-				<app-card-note class="w-full  h-full flex justify-center" />
-				<app-card-note class="w-full h-full flex justify-center" />
-				<app-card-note class="w-full h-full flex justify-center" />
-				<app-card-note class="w-full  h-full flex justify-center" />
-				<app-card-note class="w-full h-full flex justify-center" />
-				<app-card-note class="w-full h-full flex justify-center" />
-				<app-card-note class="w-full  h-full flex justify-center" />
-				<app-card-note class="w-full h-full flex justify-center" />
-				<app-card-note class="w-full h-full flex justify-center" />
+				@for (note of notes$; track note.id) {
+					<app-card-note [note]="note" class="w-full  h-full flex justify-center" />
+				}
 			</ul>
 		</div>
 	</div>
