@@ -8,7 +8,7 @@ import { Note } from '../store/notes/note.model';
 })
 export class NoteService {
 
-  private apiUrl = 'http://localhost:8080/notes';
+  private apiUrl = 'http://localhost:8080/entity/request';
   private http = inject(HttpClient);
 
   constructor() { }
@@ -21,7 +21,7 @@ export class NoteService {
       
     }
     else {
-      return this.http.get<Note[]>(this.apiUrl).pipe(
+      return this.http.get<Note[]>(this.apiUrl+'/notes').pipe(
         tap((notes) => {
           console.log("desde el backend.");
           localStorage.setItem('notes', JSON.stringify(notes));
