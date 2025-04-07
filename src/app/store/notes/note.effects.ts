@@ -1,8 +1,8 @@
 import { inject, Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { NoteService } from "../../services/note.service";
-import { createNoteSucess, loadNotes, loadNotesFailure, loadNotesSucess } from "./note.actions";
-import { catchError, exhaustMap, map, mergeMap, of, tap } from "rxjs";
+import { createNote, createNoteFailure, createNoteSucess, loadNotes, loadNotesFailure, loadNotesSucess } from "./note.actions";
+import { catchError, exhaustMap, map, mergeMap, of, switchMap, tap } from "rxjs";
 import { Note } from "./note.model";
 import { Store } from "@ngrx/store";
 
@@ -17,20 +17,20 @@ export class NoteEffects {
 	constructor() { }
 
 	//Efecto para persistir en cada cambio del state de reducer al localstorage.
-/* 	persisToLocalStorage$ = createEffect(
-		() =>
-			this.store.select('notes').pipe(
-				// Escuchar la acción de éxito
-				ofType(loadNotes,createNoteSucess),
-				tap(() => {
-					this.store.select('notes').subscribe(state => {
-						localStorage.setItem('notes', JSON.stringify(state.notes));
-					});
-				})
-			),
-		{ dispatch: false }
-	);
- */
+	/* 	persisToLocalStorage$ = createEffect(
+			() =>
+				this.store.select('notes').pipe(
+					// Escuchar la acción de éxito
+					ofType(loadNotes,createNoteSucess),
+					tap(() => {
+						this.store.select('notes').subscribe(state => {
+							localStorage.setItem('notes', JSON.stringify(state.notes));
+						});
+					})
+				),
+			{ dispatch: false }
+		);
+	 */
 	persisToLocalStorages$ = createEffect(
 		() =>
 			this.store.select('notes').pipe(
@@ -56,5 +56,25 @@ export class NoteEffects {
 
 		)
 	);
+
+	createNote$ = createEffect(
+		() =>
+			this.actions$.pipe(
+				ofType(createNote),
+				switchMap(({ newNote }) => {
+					return this.noteService.createNote(newNote)
+					.pipe(
+						map((createdNote) => {
+							return createNoteSucess({ newNote: createdNote });
+						}),
+						catchError((error) => {
+							const errorMessage = error.error?.message || 'Error al crear la nota';
+							return of(createNoteFailure({ error: errorMessage }));
+						})
+					)
+				})
+
+			)
+	)
 
 }
