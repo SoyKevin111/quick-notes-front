@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, Input, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Note, selectSelectedNoteId } from '../../store/notes';
-import { Subject, take, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-card-note',
