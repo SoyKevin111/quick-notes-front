@@ -18,15 +18,19 @@ export class NoteService {
     if (cachedNotes && cachedNotes !== '[]') {
       console.log("desde el storage");
       return of(JSON.parse(cachedNotes));
-      
+
     }
     else {
-      return this.http.get<Note[]>(this.apiUrl+'/notes').pipe(
+      return this.http.get<Note[]>(this.apiUrl + '/notes').pipe(
         tap((notes) => {
           console.log("desde el backend.");
           localStorage.setItem('notes', JSON.stringify(notes));
         })
       );
     }
+  }
+
+  createNote(note: Note) {
+    return this.http.post<Note>(this.apiUrl, note);
   }
 }

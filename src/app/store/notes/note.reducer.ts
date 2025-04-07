@@ -1,21 +1,24 @@
 import { createReducer, on } from "@ngrx/store";
 import { Note } from "./note.model";
-import { loadNotesSucess, selectNote } from "./note.actions";
+import { createNote, createNoteSucess, findNoteById, loadNotesSucess, resetNote, removeSelectedNote, selectNote } from "./note.actions";
+
 
 
 export interface State {
-	notes: Note[],
-	noteSelected:Note
+  notes: Note[],
+  noteSelectedId: number
+  note: Note
 }
 
 export const initialState: State = {
-	notes: [],
-	noteSelected:{
-		id: 0,
-		title: '',
-		emojiRef: '',
-		description: ''
-	}
+  notes: [],
+  noteSelectedId: 0,
+  note: {
+    id: 0,
+    title: 'Estado Inicial',
+    description: '',
+    emojiRef: ''
+  }
 }
 
 export const notesReducer = createReducer(
@@ -23,8 +26,34 @@ export const notesReducer = createReducer(
   on(loadNotesSucess, (state, { notes }) => {
     return { ...state, notes };
   }),
-  on(selectNote, (state, { noteSelected }) => ({
-    ...state,
-    noteSelected
-  }))
+  on(selectNote, (state, { noteSelectedId }) => {
+    console.log("Note selected: " + noteSelectedId);
+    return {
+      ...state,
+      noteSelectedId
+    };
+  }),
+  on(removeSelectedNote, (state) => {
+    //console.log("Note unselected");
+    return { ...state, noteSelectedId: 0 }
+  }),
+
+  on(findNoteById, (state, { id }) => {
+    const note = state.notes.find(n => n.id === id) || initialState.note;
+    return { ...state, note };
+  }),
+
+  on(resetNote, (state) => {
+    return { ...state, note: initialState.note }
+  }),
+
+  //! CRUD BACKEND
+  //Create
+  on(createNoteSucess, (state, { newNote }) => {
+    return { ...state, notes: [...state.notes, { ...newNote }] }
+  })
+
+
+
+
 );

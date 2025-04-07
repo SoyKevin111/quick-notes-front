@@ -9,13 +9,41 @@ export const loadNotesSucess = createAction(
 	props<{ notes: Note[] }>());
 
 export const loadNotesFailure = createAction(
-	'[Note] Loac notes failure', 
+	'[Note] Loac notes failure',
 	props<{ error: string }>());
 
 export const selectNote = createAction(
-	'[Note] Select note', 
-	props<{ noteSelected: Note }>());
+	'[Note] Select note',
+	props<{ noteSelectedId: number }>());
 
-//methods
+export const removeSelectedNote = createAction(
+	'[Note] Remove Select Note'
+);
+
+
+//!methods
+
+//?find Note
+export const findNoteById = createAction(
+	'[Note] Find note by id',
+	props<{ id: number }>()
+);
+
+export const resetNote = createAction(
+	'[Note] Load note selected'
+)
+
+
+//?create
+export const createNote = createAction(
+	'[Note] Create note',
+	props<{ newNote: Note }>()
+)
 export const createNoteSucess = createAction(
-	'[Note] Create note sucess');
+	'[Note] Create note sucess',
+	props<{ newNote: Note }>()
+);
+export const createNoteFailure = createAction(
+	'[Note] Create note failure',
+	props<{ error: string }>()
+)
