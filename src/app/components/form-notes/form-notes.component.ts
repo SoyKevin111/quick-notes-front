@@ -2,7 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { findNoteById, Note, resetNote } from '../../store/notes';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { EmojiService } from '../../services/emoji.service';
 
 @Component({
@@ -16,6 +16,7 @@ export class FormNotesComponent implements OnInit {
 
   private store = inject(Store)
   private route = inject(ActivatedRoute);
+  private router = inject(Router); // Inyecta el Router
   private emojiService = inject(EmojiService);
 
   noteSelected: Note = {
@@ -40,5 +41,10 @@ export class FormNotesComponent implements OnInit {
       this.emojiPath = this.emojiService.getEmojiPath(this.noteSelected.emojiRef);
     });
   }
+
+  toMain() {
+    this.router.navigate(['/notes']);
+  }
+
 
 }

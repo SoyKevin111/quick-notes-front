@@ -7,7 +7,7 @@ export const routes: Routes = [
 	{
 		path: '',
 		pathMatch: 'full',
-		redirectTo: '/notes/5'
+		redirectTo: '/notes'
 	},
 	{
 		path: 'notes', //todas las notas
@@ -20,6 +20,10 @@ export const routes: Routes = [
 	{
 		path: 'notes/update/:id',
 		component: FormNotesComponent
-	}
+	},
+	{
+    path: '**',
+    redirectTo: '/notes'
+  }
 
 ];

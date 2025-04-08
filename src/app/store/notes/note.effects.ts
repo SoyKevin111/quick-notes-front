@@ -18,7 +18,7 @@ export class NoteEffects {
 	constructor() { }
 
 	//Efecto para persistir en cada cambio del state de reducer al localstorage.
-	/* 	persisToLocalStorage$ = createEffect(
+		persisToLocalStorage$ = createEffect(
 			() =>
 				this.store.select('notes').pipe(
 					// Escuchar la acción de éxito
@@ -31,8 +31,8 @@ export class NoteEffects {
 				),
 			{ dispatch: false }
 		);
-	 */
-	persisToLocalStorages$ = createEffect(
+	
+/* 	persisToLocalStorages$ = createEffect(
 		() =>
 			this.store.select('notes').pipe(
 				tap((state) => {
@@ -42,7 +42,7 @@ export class NoteEffects {
 			),
 		{ dispatch: false }
 	);
-
+ */
 	loadNote$ = createEffect(
 		() => this.actions$.pipe(
 			ofType(loadNotes),
