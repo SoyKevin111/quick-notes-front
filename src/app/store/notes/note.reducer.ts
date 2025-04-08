@@ -1,6 +1,6 @@
 import { createReducer, on } from "@ngrx/store";
 import { Note } from "./note.model";
-import { createNote, createNoteSucess, findNoteById, loadNotesSucess, resetNote, removeSelectedNote, selectNote } from "./note.actions";
+import { createNoteSucess, findNoteById, loadNotesSucess, resetNote, removeSelectedNote, selectNote } from "./note.actions";
 
 
 
@@ -14,10 +14,11 @@ export const initialState: State = {
   notes: [],
   noteSelectedId: 0,
   note: {
-    id: 0,
-    title: 'Estado Inicial',
-    description: '',
-    emojiRef: ''
+    title: 'Estado Inicial [TITLE]',
+    description: `
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ornare mollis semper. Nulla blandit imperdiet accumsan. Proin facilisis turpis posuere lacus sodales, eget tempus orci dapibus. 
+    `,
+    emojiRef: 'Deport'
   }
 }
 

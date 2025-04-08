@@ -1,12 +1,15 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, Input, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Note, selectSelectedNoteId } from '../../store/notes';
+import { removeSelectedNote, selectNote, selectSelectedNoteId } from '../../store/notes';
+import { LimitTextPipe } from '../../pipes/limit-text.pipe';
+
+const pipes = [LimitTextPipe];
 
 @Component({
   selector: 'app-card-note',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, pipes],
   templateUrl: './card-note.component.html',
   styleUrl: './card-note.component.scss'
 })
@@ -16,20 +19,23 @@ export class CardNoteComponent implements OnInit {
   @Input() note: any;
 
   idSelected: number | null = null;
-  //destroyed$ = new Subject<void>();
 
   ngOnInit(): void {
     this.store.select(selectSelectedNoteId)
-      //.pipe(takeUntil(this.destroyed$))
       .subscribe(id => {
         this.idSelected = id;
+
       });
   }
 
-/*   ngOnDestroy(): void {
-    this.destroyed$.next();
-    this.destroyed$.complete();
-  } */
+  selectedNote() {
+    if (this.idSelected === this.note.id) {
+      this.store.dispatch(removeSelectedNote());
+    }
+    else {
+      this.store.dispatch(selectNote({ noteSelectedId: this.note.id }));
+    }
+  }
 
   get selected(): boolean {
     return this.note.id === this.idSelected;

@@ -1,0 +1,7 @@
+.selected-card {
+  border-color: #3b82f6 !important; /* blue-500 */
+  background-color: #eff6ff; /* blue-100 */
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.3); /* soft blue glow */
+  transform: scale(1.01);
+  transition: all 0.2s ease-in-out;
+}

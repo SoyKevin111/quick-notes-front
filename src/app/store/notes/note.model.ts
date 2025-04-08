@@ -1,6 +1,6 @@
 export interface Note {
-  id: number;
-  title:string;
+  id?: number | null;
+  title: string;
   emojiRef: string;
   description: string;
 }

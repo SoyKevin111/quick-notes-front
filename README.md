@@ -6,11 +6,13 @@
 
 - **Angular** 🖥️: Framework principal para el desarrollo frontend.
 - **NgRx** 🔄: Librería para la gestión del estado de la aplicación de manera reactiva.
-- **Angular Material** 🎨: Componentes UI modernos y accesibles para Angular.
+- **SweetAlert2** 🎨: Alertas, confirmaciones muy dinamicas para angular.
 - **Tailwind CSS** 🌐: Framework CSS para crear interfaces responsivas y personalizadas rápidamente.
 - **Git Flow** 🧑‍💻: Flujo de trabajo de Git para gestión de ramas y colaboraciones.
 - **Base de Datos** 💾: (Especificar la base de datos que se utilizará, como MySQL, MongoDB, etc.).
 
 
 ### Avances
-![texto](./public/avances-img//get-notes-backend-reducer.png)
+![getnotes](./public/avances-img/api/get-notes-backend-reducer.png)
+![createnotes](./public/avances-img/api/ezgif-31623036d9240d.gif)
+
