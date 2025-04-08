@@ -5,6 +5,7 @@ import { createNote, createNoteFailure, createNoteSucess, loadNotes, loadNotesFa
 import { catchError, exhaustMap, map, mergeMap, of, switchMap, tap } from "rxjs";
 import { Note } from "./note.model";
 import { Store } from "@ngrx/store";
+import Swal from "sweetalert2";
 
 
 @Injectable()
@@ -63,18 +64,37 @@ export class NoteEffects {
 				ofType(createNote),
 				switchMap(({ newNote }) => {
 					return this.noteService.createNote(newNote)
-					.pipe(
-						map((createdNote) => {
-							return createNoteSucess({ newNote: createdNote });
-						}),
-						catchError((error) => {
-							const errorMessage = error.error?.message || 'Error al crear la nota';
-							return of(createNoteFailure({ error: errorMessage }));
-						})
-					)
+						.pipe(
+							map((createdNote) => {
+								return createNoteSucess({ newNote: createdNote });
+							}),
+							catchError((error) => {
+								const errorMessage = error.error?.message || 'Error al crear la nota';
+								return of(createNoteFailure({ error: errorMessage }));
+							})
+						)
 				})
 
 			)
+	)
+
+
+
+	//Efectos
+
+	createNoteSucess$ = createEffect(
+		() =>
+			this.actions$
+				.pipe(
+					ofType(createNoteSucess),
+					tap(() => {
+						Swal.fire({
+							title: "SAVED",
+							text: "note created successfully.",
+							icon: "success"
+						});
+					})
+				), { dispatch: false }
 	)
 
 }

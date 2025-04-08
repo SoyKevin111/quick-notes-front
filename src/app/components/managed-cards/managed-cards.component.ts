@@ -4,7 +4,6 @@ import { RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { loadNotes, removeSelectedNote, selectNote, selectSelectedNoteId, Note } from '../../store/notes';
 import { CommonModule } from '@angular/common';
-import { take } from 'rxjs';
 import { ModalService } from '../../services/modal.service';
 import { ModalCreateNotesComponent } from '../modals/modal-create-notes/modal-create-notes.component';
 
@@ -27,7 +26,6 @@ export class ManagedCardsComponent implements OnInit {
 
 
   ngOnInit(): void {
-    //this.store.dispatch(removeLoadNoteSelected());
     this.store.dispatch(removeSelectedNote());
     this.store.dispatch(loadNotes());
 
@@ -40,21 +38,8 @@ export class ManagedCardsComponent implements OnInit {
     })
   }
 
-  toggleSelectNote(id: number): void {
-    this.selectedNoteId$
-      .pipe(take(1))
-      .subscribe(selectedNoteId => {
-        if (selectedNoteId === id) {
-          this.store.dispatch(removeSelectedNote());
-        }
-        else {
-          this.store.dispatch(selectNote({ noteSelectedId: id })); // Selecciona si era otra
-        }
-      });
-  }
-
-
-  openCreateNoteModal() {
+  createNoteModal() {
+    this.store.dispatch(removeSelectedNote());
     this.modalService.open(ModalCreateNotesComponent, { modalVisible: true, message: 'Hola desde el Managed-cards-component' })
   }
 

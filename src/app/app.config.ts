@@ -7,10 +7,12 @@ import { provideEffects } from '@ngrx/effects';
 import { NoteEffects } from './store/notes/note.effects';
 import { provideHttpClient } from '@angular/common/http';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { ReactiveFormsModule } from '@angular/forms';
 
 export const appConfig: ApplicationConfig = {
   providers: [provideZoneChangeDetection({ eventCoalescing: true }),
   provideRouter(routes),
+  ReactiveFormsModule,
   provideHttpClient(),
   provideStore({notes:notesReducer}),
   provideEffects([NoteEffects]), provideAnimationsAsync(), provideAnimationsAsync(),
