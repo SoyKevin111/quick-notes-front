@@ -20,7 +20,7 @@ export class ModalCreateNotesComponent implements OnInit {
   private noteSelectedId$ = this.store.select(selectSelectedNoteId);
   private hasId: boolean = false;//create
 
-  @Input() modalVisible: boolean = false;
+  //@Input() modalVisible: boolean = false;
   @Input() message: string = '';
 
   //ReactiveForm
@@ -66,9 +66,9 @@ export class ModalCreateNotesComponent implements OnInit {
   close() {
     this.animationState = 'modal-animate-out';
     setTimeout(() => {
-      this.modalVisible = false;
+      //this.modalVisible = false;
       this.modalService.close();
-    }, 150); // ⏱️ ajusta al tiempo de tu animación CSS
+    }, 150);
   }
 
 }

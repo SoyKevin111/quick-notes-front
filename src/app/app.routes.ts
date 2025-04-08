@@ -7,7 +7,7 @@ export const routes: Routes = [
 	{
 		path: '',
 		pathMatch: 'full',
-		redirectTo: '/notes'
+		redirectTo: '/notes/5'
 	},
 	{
 		path: 'notes', //todas las notas

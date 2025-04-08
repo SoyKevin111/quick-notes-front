@@ -1,5 +1,5 @@
 import { createAction, props } from "@ngrx/store";
-import { Note } from "./note.model";
+import { Note } from "../../models/note.model";
 
 
 //Note

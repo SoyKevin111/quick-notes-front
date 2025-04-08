@@ -40,7 +40,7 @@ export class ManagedCardsComponent implements OnInit {
 
   createNoteModal() {
     this.store.dispatch(removeSelectedNote());
-    this.modalService.open(ModalCreateNotesComponent, { modalVisible: true, message: 'Hola desde el Managed-cards-component' })
+    this.modalService.open(ModalCreateNotesComponent, { message: 'Hola desde el Managed-cards-component' })//modalVisible: true,
   }
 
 

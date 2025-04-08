@@ -3,12 +3,14 @@
 	[ngClass]="selected ? 'selected-card ' : 'border-gray-300'"
 	class="w-[90%] h-[4em] flex items-center cursor-pointer gap-[.5rem] border bg-white rounded-lg shadow-md hover:shadow-lg transition-all">
 	
-	<div class="card_emojiRef w-[25%] flex justify-center border">
+	<div class="card_emojiRef w-[25%] flex justify-center">
 		<div
-			class="w-[3rem] h-[3rem] bg-red-500 border-4 border-white rounded-full shadow-lg transform hover:scale-105 transition-transform">
+			[style.backgroundCOlor]="randombg"
+			class="w-[3rem] h-[3rem] border-4 border-white rounded-full shadow-lg transform hover:scale-105 transition-transform flex items-center justify-center">
+			<img [src]="emojiPath" alt="" class="w-[2rem] h-[2rem] object-contain" />
 		</div>
 	</div>
-	<div class="card_titleTask w-[60%] border">
+	<div class="card_titleTask w-[60%]">
 		<h2
 		class="text-[1.2rem] text-black font-semibold tracking-tight transform hover:translate-x-2 transition-all">
 		 {{note.title | limitText: 21}}

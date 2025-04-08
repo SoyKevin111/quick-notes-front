@@ -3,7 +3,7 @@ import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { NoteService } from "../../services/note.service";
 import { createNote, createNoteFailure, createNoteSucess, loadNotes, loadNotesFailure, loadNotesSucess } from "./note.actions";
 import { catchError, exhaustMap, map, mergeMap, of, switchMap, tap } from "rxjs";
-import { Note } from "./note.model";
+import { Note } from "../../models/note.model";
 import { Store } from "@ngrx/store";
 import Swal from "sweetalert2";
 

@@ -3,6 +3,7 @@ import { Store } from '@ngrx/store';
 import { findNoteById, Note, resetNote } from '../../store/notes';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
+import { EmojiService } from '../../services/emoji.service';
 
 @Component({
   selector: 'app-form-notes',
@@ -15,13 +16,15 @@ export class FormNotesComponent implements OnInit {
 
   private store = inject(Store)
   private route = inject(ActivatedRoute);
+  private emojiService = inject(EmojiService);
 
   noteSelected: Note = {
-    id: 0,
     title: 'JAAJAJAJ dede el form',
     description: '',
     emojiRef: ''
   }
+
+  emojiPath = '';
 
   ngOnInit(): void {
     this.store.dispatch(resetNote());
@@ -34,6 +37,7 @@ export class FormNotesComponent implements OnInit {
 
     this.store.select('notes').subscribe(state => {
       this.noteSelected = { ...state.note };
+      this.emojiPath = this.emojiService.getEmojiPath(this.noteSelected.emojiRef);
     });
   }
 

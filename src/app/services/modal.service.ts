@@ -5,24 +5,25 @@ import { Injectable, ComponentRef, ApplicationRef, Type, EnvironmentInjector, cr
 })
 export class ModalService {
 
-  private modalRef: ComponentRef<any> | null = null; //inicia en nulo
+  private modalRef: ComponentRef<any> | null = null; // Inicia en nulo
 
   private _injector = inject(EnvironmentInjector);
   private _appRef = inject(ApplicationRef);
 
-  //constructor() { }
-
-  open<T>(component: Type<T>, inputs?: Partial<T>)
-    : ComponentRef<T> {
+  open<T>(component: Type<T>, inputs?: Partial<T>): ComponentRef<T> {
+    
+    // Si ya hay un modal abierto, no abrir uno nuevo
+    if (this.modalRef) {
+      //console.log("Ya hay un modal abierto, no se abrirá uno nuevo.");
+      return this.modalRef;
+    }
 
     this.modalRef = createComponent(component, {
       environmentInjector: this._injector
     });
 
-    //asignar inputs
     if (inputs) {
-      console.log(inputs);
-
+      //console.log(inputs);
       Object.assign(this.modalRef.instance, inputs);
     }
 
@@ -42,6 +43,4 @@ export class ModalService {
       this.modalRef = null;
     }
   }
-
-
 }
