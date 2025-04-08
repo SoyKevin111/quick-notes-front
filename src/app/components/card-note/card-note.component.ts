@@ -2,11 +2,14 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, Input, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { removeSelectedNote, selectNote, selectSelectedNoteId } from '../../store/notes';
+import { LimitTextPipe } from '../../pipes/limit-text.pipe';
+
+const pipes = [LimitTextPipe];
 
 @Component({
   selector: 'app-card-note',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, pipes],
   templateUrl: './card-note.component.html',
   styleUrl: './card-note.component.scss'
 })

@@ -31,6 +31,6 @@ export class NoteService {
   }
 
   createNote(note: Note) {
-    return this.http.post<Note>(this.apiUrl, note);
+    return this.http.post<Note>(this.apiUrl + '/notes', note);
   }
 }

@@ -2,8 +2,8 @@ import { Component, inject, OnInit } from '@angular/core';
 import { CardNoteComponent } from '../card-note/card-note.component';
 import { RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { loadNotes, removeSelectedNote, selectNote, selectSelectedNoteId, Note } from '../../store/notes';
-import { CommonModule } from '@angular/common';
+import { loadNotes, removeSelectedNote, selectSelectedNoteId, Note } from '../../store/notes';
+import { CommonModule} from '@angular/common';
 import { ModalService } from '../../services/modal.service';
 import { ModalCreateNotesComponent } from '../modals/modal-create-notes/modal-create-notes.component';
 

@@ -3,7 +3,7 @@ import { ModalService } from '../../../services/modal.service';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { createNoteSucess, Note, selectSelectedNoteId } from '../../../store/notes';
+import { createNote, Note, selectSelectedNoteId } from '../../../store/notes';
 
 @Component({
   selector: 'app-modal-create-notes',
@@ -56,7 +56,7 @@ export class ModalCreateNotesComponent implements OnInit {
       }
       console.log(note);
       if (!this.hasId) { //create
-        this.store.dispatch(createNoteSucess({ newNote: note }))
+        this.store.dispatch(createNote({ newNote: note }))
       }
       this.close();
       this.createNoteForm.reset();
