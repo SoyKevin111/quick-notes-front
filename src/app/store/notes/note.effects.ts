@@ -1,11 +1,11 @@
 import { inject, Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
-import { NoteService } from "../../services/note.service";
-import { createNote, createNoteFailure, createNoteSucess, loadNotes, loadNotesFailure, loadNotesSucess } from "./note.actions";
-import { catchError, exhaustMap, map, mergeMap, of, switchMap, tap } from "rxjs";
-import { Note } from "../../models/note.model";
-import { Store } from "@ngrx/store";
+import { select, Store } from "@ngrx/store";
+import { catchError, distinctUntilChanged, EMPTY, filter, map, of, skipWhile, switchMap, tap } from "rxjs";
 import Swal from "sweetalert2";
+import { LocalStorageService } from "../../services/local-storage.service";
+import { NoteService } from "../../services/note.service";
+import { createNote, createNoteFailure, createNoteSucess, loadNotesFailure, loadNotesSucess, loadState } from "./note.actions";
 
 
 @Injectable()
@@ -13,49 +13,67 @@ export class NoteEffects {
 
 	private actions$ = inject(Actions);
 	private noteService = inject(NoteService);
+	private localStorageService = inject(LocalStorageService);
 	private store = inject(Store);
 
 	constructor() { }
 
-	//Efecto para persistir en cada cambio del state de reducer al localstorage.
-		persisToLocalStorage$ = createEffect(
-			() =>
-				this.store.select('notes').pipe(
-					// Escuchar la acción de éxito
-					ofType(loadNotes,createNoteSucess),
-					tap(() => {
-						this.store.select('notes').subscribe(state => {
-							localStorage.setItem('notes', JSON.stringify(state.notes));
-						});
-					})
-				),
-			{ dispatch: false }
-		);
-	
-/* 	persisToLocalStorages$ = createEffect(
-		() =>
-			this.store.select('notes').pipe(
-				tap((state) => {
-					localStorage.setItem('notes', JSON.stringify(state.notes));
+	//siempre cargara las notas desde el backend en el componente de gestion de notas :D
+	loadNotesAlways$ = createEffect(() =>
+		this.actions$.pipe(
+			ofType('[App principal] Notas desde el backend'),
+			switchMap(() => {
+				return this.noteService.getNotes().pipe(
+					map((notes) => loadNotesSucess({ notes })),
+					catchError((error) => of(loadNotesFailure({ error })))
+				);
+			})
+		)
+	);
+
+	//captura el state con notas vacias, y le agrega las notas del local storage
+	restoreStateByStore$ = createEffect(() =>
+		this.store.pipe(
+			select('notes'),
+			filter((state) => !state || state.notes.length === 0), // Si el estado está vacío
+			switchMap(() => {
+				const savedState = this.localStorageService.getState();
+				if (savedState && savedState.notes.length > 0) {
+					return of(loadState({ savedState }));
 				}
-				)
+				return EMPTY;
+			})
+		)
+	);
+
+/* 	loadNotesIfNeeded$ = createEffect(() => //por sicaso Dx
+		this.store.pipe(
+			select('notes'),
+			filter((state) => !state || state.notes.length === 0),
+			switchMap(() => {
+				const savedState = this.localStorageService.getState();
+
+				if (savedState && savedState.notes.length > 0) {
+					return EMPTY;
+				} else {
+					return this.noteService.getNotes().pipe(
+						map((notes) => loadNotesSucess({ notes })),
+						catchError((error) => of(loadNotesFailure({ error })))
+					);
+				}
+			})
+		)
+	); */
+
+	persistToLocalStorage$ = createEffect( //escucha los cambios del state y los guarda en localstorage
+		() =>
+			this.store.pipe(
+				select('notes'),
+				skipWhile((state) => !state || state.notes.length === 0), //ignora hasta que deje se cumplirse la condicion
+				distinctUntilChanged(),
+				tap((state) => this.localStorageService.saveState(state))
 			),
 		{ dispatch: false }
-	);
- */
-	loadNote$ = createEffect(
-		() => this.actions$.pipe(
-			ofType(loadNotes),
-			exhaustMap(() => this.noteService.getNotes()
-				.pipe(
-					map((notes: Note[]) => {
-						return loadNotesSucess({ notes });
-					}),
-					catchError((error) => of(loadNotesFailure({ error: error.message })))
-				)
-			)
-
-		)
 	);
 
 	createNote$ = createEffect(
@@ -98,3 +116,4 @@ export class NoteEffects {
 	)
 
 }
+

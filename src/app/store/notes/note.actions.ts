@@ -1,8 +1,19 @@
 import { createAction, props } from "@ngrx/store";
 import { Note } from "../../models/note.model";
+import { State } from "./note.reducer";
+
+
+//state
+
+// Acción para cargar el estado completo desde localStorage
+export const loadState = createAction(
+  '[Note] Load State',
+  props<{ savedState: State }>()
+);
 
 
 //Note
+export const loadNotesFromLocalStorage = createAction('[Notes] Load Notes from Local Storage');
 export const loadNotes = createAction('[Note] Load Notes');
 export const loadNotesSucess = createAction(
 	'[Note] Loac notes sucess',
@@ -24,12 +35,12 @@ export const removeSelectedNote = createAction(
 //!methods
 
 //?find Note
-export const findNoteById = createAction(
+export const loadNoteById = createAction(
 	'[Note] Find note by id',
 	props<{ id: number }>()
 );
 
-export const resetNote = createAction(
+export const resetLoadNote = createAction(
 	'[Note] Load note selected'
 )
 

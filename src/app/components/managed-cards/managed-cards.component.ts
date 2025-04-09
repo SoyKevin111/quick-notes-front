@@ -1,10 +1,10 @@
+import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
-import { CardNoteComponent } from '../card-note/card-note.component';
 import { RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { loadNotes, removeSelectedNote, selectSelectedNoteId, Note } from '../../store/notes';
-import { CommonModule} from '@angular/common';
 import { ModalService } from '../../services/modal.service';
+import { Note, removeSelectedNote, resetLoadNote, selectSelectedNoteId } from '../../store/notes';
+import { CardNoteComponent } from '../card-note/card-note.component';
 import { ModalCreateNotesComponent } from '../modals/modal-create-notes/modal-create-notes.component';
 
 
@@ -26,9 +26,9 @@ export class ManagedCardsComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.store.dispatch(removeSelectedNote());
-    this.store.dispatch(loadNotes());
 
+    this.store.dispatch({ type: '[App principal] Notas desde el backend' })
+    this.resetStateInitial();
     this.store.select('notes').subscribe(state => {
       this.notes$ = state.notes;
     });
@@ -38,9 +38,14 @@ export class ManagedCardsComponent implements OnInit {
     })
   }
 
+  resetStateInitial() {
+    this.store.dispatch(resetLoadNote());
+    this.store.dispatch(removeSelectedNote())
+  }
+
   createNoteModal() {
     this.store.dispatch(removeSelectedNote());
-    this.modalService.open(ModalCreateNotesComponent, { message: 'Hola desde el Managed-cards-component' })//modalVisible: true,
+    this.modalService.open(ModalCreateNotesComponent)
   }
 
 

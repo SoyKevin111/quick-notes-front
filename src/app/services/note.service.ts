@@ -14,20 +14,11 @@ export class NoteService {
   constructor() { }
 
   getNotes(): Observable<Note[]> {
-    const cachedNotes = localStorage.getItem('notes');
-    if (cachedNotes && cachedNotes !== '[]') {
-      console.log("desde el storage");
-      return of(JSON.parse(cachedNotes));
-
-    }
-    else {
-      return this.http.get<Note[]>(this.apiUrl + '/notes').pipe(
-        tap((notes) => {
-          console.log("desde el backend.");
-          localStorage.setItem('notes', JSON.stringify(notes));
-        })
-      );
-    }
+    return this.http.get<Note[]>(this.apiUrl + '/notes').pipe(
+      tap(()=>{
+        console.log("Notes desde el Backend.");
+      })
+    );
   }
 
 

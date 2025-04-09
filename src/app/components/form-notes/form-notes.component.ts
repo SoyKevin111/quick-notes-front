@@ -1,9 +1,9 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { findNoteById, Note, resetNote } from '../../store/notes';
 import { CommonModule } from '@angular/common';
+import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { EmojiService } from '../../services/emoji.service';
+import { loadNoteById, Note } from '../../store/notes';
 
 @Component({
   selector: 'app-form-notes',
@@ -28,11 +28,11 @@ export class FormNotesComponent implements OnInit {
   emojiPath = '';
 
   ngOnInit(): void {
-    this.store.dispatch(resetNote());
+    //this.store.dispatch(resetNote());
     this.route.paramMap.subscribe(params => {
       const id: number = +(params.get('id') || '0');
       if (id > 0) {
-        this.store.dispatch(findNoteById({ id }));
+        this.store.dispatch(loadNoteById({ id }));
       }
     });
 
