@@ -56,5 +56,5 @@ export const createNoteSucess = createAction(
 );
 export const createNoteFailure = createAction(
 	'[Note] Create note failure',
-	props<{ error: string }>()
+	props<{ error: string, status: string }>()
 )

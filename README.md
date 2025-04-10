@@ -15,4 +15,5 @@
 ### Avances
 ![getnotes](./public/avances-img/api/get-notes-backend-reducer.png)
 ![createnotes](./public/avances-img/api/ezgif-31623036d9240d.gif)
+![Error Duplicated Title](./public/avances-img/api/catch-error-from-backend-duplicate-title.png)
 

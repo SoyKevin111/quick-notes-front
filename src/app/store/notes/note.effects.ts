@@ -88,7 +88,8 @@ export class NoteEffects {
 							}),
 							catchError((error) => {
 								const errorMessage = error.error?.message || 'Error al crear la nota';
-								return of(createNoteFailure({ error: errorMessage }));
+								const errorStatus = error.error?.status || 'Status Error'
+								return of(createNoteFailure({ error: errorMessage, status :errorStatus }));
 							})
 						)
 				})
