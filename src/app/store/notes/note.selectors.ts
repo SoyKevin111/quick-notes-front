@@ -8,3 +8,8 @@ export const selectSelectedNoteId = createSelector(
 	selectNotesState,
 	(state: State) => state.noteSelectedId
 );
+
+export const loadNoteSelected = createSelector(
+	selectNotesState,
+	(state: State) => state.note
+)

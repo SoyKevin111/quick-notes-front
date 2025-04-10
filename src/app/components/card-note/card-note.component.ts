@@ -25,10 +25,7 @@ export class CardNoteComponent implements OnInit {
   randombg:string = '';
 
   ngOnInit(): void {
-    this.store.select(selectSelectedNoteId)
-      .subscribe(id => {
-        this.idSelected = id;
-      });
+    this.store.select(selectSelectedNoteId).subscribe(id => {this.idSelected = id;});
     this.emojiPath = this.emojiService.getEmojiPath(this.note.emojiRef);
     this.randombg  = this.emojiService.getEmojiRandomBg();
   }

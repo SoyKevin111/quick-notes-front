@@ -59,8 +59,8 @@ export const notesReducer = createReducer(
     return { ...state, notes: [...state.notes, { ...newNote }] }
   }),
 
-  on(createNoteFailure, (state, { error, status }) => {
-    console.log(`message: ${error} status: ${status}`);
+  on(createNoteFailure, (state, { status }) => {
+    console.log(`status: ${status}`);
     return { ...state }
   })
 

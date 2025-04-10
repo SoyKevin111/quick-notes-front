@@ -14,7 +14,7 @@ export const routes: Routes = [
 		component: ManagedCardsComponent
 	},
 	{
-		path: 'notes/:id',//consulta por id
+		path: 'notes/info/:id',//consulta por id
 		component: FormNotesComponent
 	},
 	{

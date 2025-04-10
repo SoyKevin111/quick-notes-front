@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { EmojiService } from '../../services/emoji.service';
 import { loadNoteById, Note } from '../../store/notes';
+import { map, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-form-notes',
@@ -19,27 +20,25 @@ export class FormNotesComponent implements OnInit {
   private router = inject(Router); // Inyecta el Router
   private emojiService = inject(EmojiService);
 
-  noteSelected: Note = {
-    title: 'JAAJAJAJ dede el form',
-    description: '',
-    emojiRef: ''
-  }
+  //antes de la suscripcion, se suscribe en el template con async pipe
+  noteSelected$: Observable<Note> = this.store.select('notes').pipe(
+    map(state => (
+      { ...state.note, emojiRef: this.emojiService.getEmojiPath(state.note.emojiRef) }
+    ))
+  );
 
-  emojiPath = '';
+  isUpdate: boolean = this.route.snapshot.url.some(segment => segment.path === 'update');
 
   ngOnInit(): void {
-    //this.store.dispatch(resetNote());
-    this.route.paramMap.subscribe(params => {
-      const id: number = +(params.get('id') || '0');
-      if (id > 0) {
-        this.store.dispatch(loadNoteById({ id }));
-      }
-    });
+    const noteId = this.route.snapshot.paramMap.get('id');
+    if (noteId) {
+      this.store.dispatch(loadNoteById({ id: +noteId }));
+    }
 
-    this.store.select('notes').subscribe(state => {
-      this.noteSelected = { ...state.note };
-      this.emojiPath = this.emojiService.getEmojiPath(this.noteSelected.emojiRef);
-    });
+  }
+
+  update() {
+    this.router.navigate(['/notes']);
   }
 
   toMain() {

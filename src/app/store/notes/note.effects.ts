@@ -46,24 +46,24 @@ export class NoteEffects {
 		)
 	);
 
-/* 	loadNotesIfNeeded$ = createEffect(() => //por sicaso Dx
-		this.store.pipe(
-			select('notes'),
-			filter((state) => !state || state.notes.length === 0),
-			switchMap(() => {
-				const savedState = this.localStorageService.getState();
-
-				if (savedState && savedState.notes.length > 0) {
-					return EMPTY;
-				} else {
-					return this.noteService.getNotes().pipe(
-						map((notes) => loadNotesSucess({ notes })),
-						catchError((error) => of(loadNotesFailure({ error })))
-					);
-				}
-			})
-		)
-	); */
+	/* 	loadNotesIfNeeded$ = createEffect(() => //por sicaso Dx
+			this.store.pipe(
+				select('notes'),
+				filter((state) => !state || state.notes.length === 0),
+				switchMap(() => {
+					const savedState = this.localStorageService.getState();
+	
+					if (savedState && savedState.notes.length > 0) {
+						return EMPTY;
+					} else {
+						return this.noteService.getNotes().pipe(
+							map((notes) => loadNotesSucess({ notes })),
+							catchError((error) => of(loadNotesFailure({ error })))
+						);
+					}
+				})
+			)
+		); */
 
 	persistToLocalStorage$ = createEffect( //escucha los cambios del state y los guarda en localstorage
 		() =>
@@ -89,7 +89,7 @@ export class NoteEffects {
 							catchError((error) => {
 								const errorMessage = error.error?.message || 'Error al crear la nota';
 								const errorStatus = error.error?.status || 'Status Error'
-								return of(createNoteFailure({ error: errorMessage, status :errorStatus }));
+								return of(createNoteFailure({ status: errorStatus }));
 							})
 						)
 				})
@@ -112,6 +112,23 @@ export class NoteEffects {
 							text: "note created successfully.",
 							icon: "success"
 						});
+					})
+				), { dispatch: false }
+	)
+
+	createNotefailure$ = createEffect(
+		() =>
+			this.actions$
+				.pipe(
+					ofType(createNoteFailure),
+					tap(({ status }) => {
+						Swal.fire(
+							{
+								title: status,
+								text: 'Title Already Exists',
+								icon: "error"
+							}
+						);
 					})
 				), { dispatch: false }
 	)

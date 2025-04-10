@@ -14,7 +14,7 @@
 
 		@if(selectedNoteId != 0){
 			<button [routerLink]="['/notes/update', selectedNoteId]" type="button" class="text-white bg-blue-500 hover:bg-blue-600  rounded-lg text-sm px-5 py-2.5 me-2 mb-2 ">Update</button>
-			<button [routerLink]="['/notes',selectedNoteId]" type="button" class="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500  font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 ">Show</button>
+			<button [routerLink]="['/notes/info',selectedNoteId]" type="button" class="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500  font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 ">Show</button>
 		}
 		@else{
 			<button type="button" class="text-white bg-gray-500 hover:bg-gray-600  rounded-lg text-sm px-5 py-2.5 me-2 mb-2 ">Update</button>

@@ -15,7 +15,7 @@ export class NoteService {
 
   getNotes(): Observable<Note[]> {
     return this.http.get<Note[]>(this.apiUrl + '/notes').pipe(
-      tap(()=>{
+      tap(() => {
         console.log("Notes desde el Backend.");
       })
     );
@@ -24,5 +24,12 @@ export class NoteService {
 
   createNote(note: Note) {
     return this.http.post<Note>(this.apiUrl + '/notes', note);
+  }
+
+
+
+  extractProtocol(state: string): number | null {
+    const match = state.match(/\d+/);
+    return match ? parseInt(match[0], 10) : null;
   }
 }
