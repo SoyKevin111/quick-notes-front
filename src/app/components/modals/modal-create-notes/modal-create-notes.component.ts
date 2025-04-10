@@ -3,7 +3,8 @@ import { ModalService } from '../../../services/modal.service';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { createNote, Note, removeSelectedNote, selectSelectedNoteId } from '../../../store/notes';
+import { createNote, Note, removeSelectedNote } from '../../../store/notes';
+import { EmojiType } from '../../../models/emojiType.enum';
 
 @Component({
   selector: 'app-modal-create-notes',
@@ -23,13 +24,26 @@ export class ModalCreateNotesComponent implements OnInit {
   //ReactiveForm
   createNoteForm = this._fb.group(
     {
-      title: ['', [Validators.required]],
+      title: ['',
+        [
+          Validators.required,
+          Validators.maxLength(30),
+          Validators.pattern(/^(?!\s*$).+/)
+        ]
+      ],
       emojiRef: ['', [Validators.required]],
-      description: ['', [Validators.required]]
+      description: ['',
+        [
+          Validators.required,
+          Validators.maxLength(200),
+          Validators.pattern(/^(?!\s*$).+/)
+        ]
+      ]
     }
   );
 
   animationState = 'modal-animate-in';
+  emojiOptions = Object.values(EmojiType);
 
   ngOnInit(): void {
     this.store.dispatch(removeSelectedNote());
