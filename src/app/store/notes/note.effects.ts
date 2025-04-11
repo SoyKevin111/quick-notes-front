@@ -2,10 +2,11 @@ import { inject, Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { select, Store } from "@ngrx/store";
 import { catchError, distinctUntilChanged, EMPTY, filter, map, of, skipWhile, switchMap, tap } from "rxjs";
-import Swal from "sweetalert2";
 import { LocalStorageService } from "../../services/local-storage.service";
 import { NoteService } from "../../services/note.service";
-import { createNote, createNoteFailure, createNoteSucess, loadNotesFailure, loadNotesSucess, loadState } from "./note.actions";
+import { NotificationService } from "../../services/notification.service";
+import { handleError } from "../../utils/handler.error.";
+import { createNote, createNoteFailure, createNoteSucess, loadNotesFailure, loadNotesSucess, loadState, updateNote, updateNoteFailure, updateNoteSucess } from "./note.actions";
 
 
 @Injectable()
@@ -15,6 +16,7 @@ export class NoteEffects {
 	private noteService = inject(NoteService);
 	private localStorageService = inject(LocalStorageService);
 	private store = inject(Store);
+	private notificationService = inject(NotificationService);
 
 	constructor() { }
 
@@ -67,51 +69,55 @@ export class NoteEffects {
 							map((createdNote) => {
 								return createNoteSucess({ newNote: createdNote });
 							}),
-							catchError((error) => {
-								const errorStatus: string = error.error?.status || 'Status Error'
-								const errors: any = error.error?.errors || [];
-								const firstError: string = errors.length > 0 ? errors[0] : '';
-								return of(createNoteFailure({ status: errorStatus, description: firstError }));
-							})
+							catchError((error) => handleError(error, createNoteFailure))
 						)
 				})
 
 			)
 	)
 
+	updateNote$ = createEffect(
+		() =>
+			this.actions$.pipe(
+				ofType(updateNote),
+				switchMap(({ updateNote}) => {
+						return this.noteService.updateNote(updateNote)
+						.pipe(
+						map((updatedNote) => updateNoteSucess({ updatedNote: updatedNote })),
+						catchError((error) => handleError(error, updateNoteFailure))
+					);
+				})
+			)
+	)
+
 
 
 	//Efectos
-
-	createNoteSucess$ = createEffect(
+	successNotification$ = createEffect(
 		() =>
 			this.actions$
 				.pipe(
-					ofType(createNoteSucess),
-					tap(() => {
-						Swal.fire({
-							title: "SAVED",
-							text: "note created successfully.",
-							icon: "success"
-						});
+					ofType(createNoteSucess, updateNoteSucess),
+					tap(({ type }) => {
+						switch (type) {
+							case createNoteSucess.type:
+								this.notificationService.showSuccess('CREATE');
+								break;
+							case updateNoteSucess.type:
+								this.notificationService.showSuccess('UPDATE');
+								break;
+						}
 					})
 				), { dispatch: false }
 	)
 
-	createNotefailure$ = createEffect(
+	errorNotification$ = createEffect(
 		() =>
 			this.actions$
 				.pipe(
-					ofType(createNoteFailure),
+					ofType(createNoteFailure, updateNoteFailure),
 					tap(({ status, description }) => {
-						Swal.fire(
-							{
-								title: "UNKNOWN_ERROR",
-								text: description,
-								footer: status,
-								icon: "error"
-							}
-						);
+						this.notificationService.showError(status, description);
 					})
 				), { dispatch: false }
 	)

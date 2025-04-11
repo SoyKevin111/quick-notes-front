@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Observable, of, tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { Note } from '../models/note.model';
+
 
 @Injectable({
   providedIn: 'root'
@@ -21,12 +22,13 @@ export class NoteService {
     );
   }
 
-
-  createNote(note: Note) {
+  createNote(note: Note): Observable<Note> {
     return this.http.post<Note>(this.apiUrl + '/notes', note);
   }
 
-
+  updateNote(note: Note): Observable<Note> {
+    return this.http.put<Note>(`${this.apiUrl}/notes/${note.id}`, note);
+  }
 
   extractProtocol(state: string): number | null {
     const match = state.match(/\d+/);

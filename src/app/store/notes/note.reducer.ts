@@ -1,6 +1,6 @@
 import { createReducer, on } from "@ngrx/store";
 import { Note } from "../../models/note.model";
-import { createNoteSucess, loadNoteById, loadNotesSucess, resetLoadNote, removeSelectedNote, selectNote, createNoteFailure, loadState } from "./note.actions";
+import { createNoteFailure, createNoteSucess, loadNoteById, loadNotesSucess, loadState, removeSelectedNote, resetLoadNote, selectNote, updateNoteFailure, updateNoteSucess } from "./note.actions";
 
 
 
@@ -25,7 +25,7 @@ export const initialState: State = {
 export const notesReducer = createReducer(
   initialState,
 
-  on(loadState, (state, { savedState}) => {
+  on(loadState, (state, { savedState }) => {
     return { ...savedState };
   }),
 
@@ -40,8 +40,7 @@ export const notesReducer = createReducer(
     };
   }),
   on(removeSelectedNote, (state) => {
-    //console.log("Note unselected");
-    return { ...state, noteSelectedId: 0 }
+    return { ...state, noteSelectedId: 0 };
   }),
 
   on(loadNoteById, (state, { id }) => {
@@ -50,21 +49,35 @@ export const notesReducer = createReducer(
   }),
 
   on(resetLoadNote, (state) => {
-    return { ...state, note: initialState.note }
+    return { ...state, note: initialState.note };
   }),
 
   //! CRUD BACKEND
+
   //Create
   on(createNoteSucess, (state, { newNote }) => {
-    return { ...state, notes: [...state.notes, { ...newNote }] }
+    return { ...state, notes: [...state.notes, { ...newNote }] };
   }),
 
   on(createNoteFailure, (state, { status, description }) => {
-    console.log(`status: ${status} description: ${description}`);
-    return { ...state }
-  })
+    console.log(`[Error Create] status: ${status} description: ${description}`);
+    return { ...state };
+  }),
 
+  //Update
+  on(updateNoteSucess, (state, { updatedNote }) => {
+    return {
+      ...state,
+      notes: state.notes.map((note: Note) =>
+        note.id === updatedNote.id ? { ...note, title: updatedNote.title, description: updatedNote.description } : note
+      )
+    };
+  }),
 
+  on(updateNoteFailure, (state, { status, description }) => {
+    console.log(`[Error Update] status: ${status} description: ${description}`);
+    return { ...state };
+  }),
 
 
 );

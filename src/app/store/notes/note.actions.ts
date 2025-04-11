@@ -34,7 +34,7 @@ export const removeSelectedNote = createAction(
 
 //!methods
 
-//?find Note
+//?find load Note
 export const loadNoteById = createAction(
 	'[Note] Find note by id',
 	props<{ id: number }>()
@@ -45,7 +45,7 @@ export const resetLoadNote = createAction(
 )
 
 
-//?create
+//?Create
 export const createNote = createAction(
 	'[Note] Create note',
 	props<{ newNote: Note }>()
@@ -56,5 +56,19 @@ export const createNoteSucess = createAction(
 );
 export const createNoteFailure = createAction(
 	'[Note] Create note failure',
+	props<{ status: string , description: string}>()
+)
+
+//?Update
+export const updateNote = createAction(
+	'[Note] Update note',
+	props<{updateNote: Note}>()
+)
+export const updateNoteSucess = createAction(
+	'[Note] Update note sucess',
+	props<{updatedNote: Note}>()
+)
+export const updateNoteFailure = createAction(
+	'[Note] update note failure',
 	props<{ status: string , description: string}>()
 )

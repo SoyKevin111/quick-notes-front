@@ -8,6 +8,7 @@
       <div>
         <label for="title" class="block mb-2 text-sm font-medium text-gray-900">Title</label>
         <input formControlName="title" type="text" id="title" 
+          maxlength="30" minlength="5"
           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" 
           placeholder="Enter a title" required />
         <!-- Error title-->
@@ -40,8 +41,10 @@
       
       <div>
         <label for="description" class="block mb-2 text-sm font-medium text-gray-900">Description</label>
-        <textarea formControlName="description" id="description" rows="3" 
-          class="max-h-[100px] bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" 
+        <textarea 
+          minlength="5" maxlength="250"
+          formControlName="description" id="description" rows="3" 
+          class="max-h-[200px] min-h-[100px] bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" 
           placeholder="Write your description here..." required></textarea>
         <!-- error description -->
         @if (createNoteForm.get('description')?.touched && createNoteForm.get('description')?.invalid) {

@@ -1,10 +1,10 @@
-import { Component, inject, Inject, Input, OnInit } from '@angular/core';
-import { ModalService } from '../../../services/modal.service';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, inject, Input, OnInit } from '@angular/core';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
+import { EmojiType } from '../../../models/emoji-type.enum';
+import { ModalService } from '../../../services/modal.service';
 import { createNote, Note, removeSelectedNote } from '../../../store/notes';
-import { EmojiType } from '../../../models/emojiType.enum';
 
 @Component({
   selector: 'app-modal-create-notes',
@@ -35,7 +35,7 @@ export class ModalCreateNotesComponent implements OnInit {
       description: ['',
         [
           Validators.required,
-          Validators.maxLength(200),
+          Validators.maxLength(250),
           Validators.pattern(/^(?!\s*$).+/)
         ]
       ]
