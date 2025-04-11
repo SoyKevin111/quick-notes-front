@@ -9,10 +9,12 @@
 - **SweetAlert2** 🎨: Alertas, confirmaciones muy dinamicas para angular.
 - **Tailwind CSS** 🌐: Framework CSS para crear interfaces responsivas y personalizadas rápidamente.
 - **Git Flow** 🧑‍💻: Flujo de trabajo de Git para gestión de ramas y colaboraciones.
-- **Base de Datos** 💾: (Especificar la base de datos que se utilizará, como MySQL, MongoDB, etc.).
+- **Base de Datos** 💾: (Especificar la base de datos que se utilizará es MYSQL).
 
 
 ### Avances
+### Avances
+![updatenotes](./public/avances-img/api/avance-3-api.gif)
 ![updatenotes](./public/avances-img/api/avance-2-api.gif)
 ![createnotes](./public/avances-img/api/avance-1-api.gif)
 
