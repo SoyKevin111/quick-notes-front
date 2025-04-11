@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Observable, of, tap } from 'rxjs';
-import { Note } from '../store/notes/note.model';
+import { Observable, tap } from 'rxjs';
+import { Note } from '../models/note.model';
+
 
 @Injectable({
   providedIn: 'root'
@@ -14,23 +15,23 @@ export class NoteService {
   constructor() { }
 
   getNotes(): Observable<Note[]> {
-    const cachedNotes = localStorage.getItem('notes');
-    if (cachedNotes && cachedNotes !== '[]') {
-      console.log("desde el storage");
-      return of(JSON.parse(cachedNotes));
-
-    }
-    else {
-      return this.http.get<Note[]>(this.apiUrl + '/notes').pipe(
-        tap((notes) => {
-          console.log("desde el backend.");
-          localStorage.setItem('notes', JSON.stringify(notes));
-        })
-      );
-    }
+    return this.http.get<Note[]>(this.apiUrl + '/notes').pipe(
+      tap(() => {
+        console.log("Notes desde el Backend.");
+      })
+    );
   }
 
-  createNote(note: Note) {
+  createNote(note: Note): Observable<Note> {
     return this.http.post<Note>(this.apiUrl + '/notes', note);
+  }
+
+  updateNote(note: Note): Observable<Note> {
+    return this.http.put<Note>(`${this.apiUrl}/notes/${note.id}`, note);
+  }
+
+  extractProtocol(state: string): number | null {
+    const match = state.match(/\d+/);
+    return match ? parseInt(match[0], 10) : null;
   }
 }

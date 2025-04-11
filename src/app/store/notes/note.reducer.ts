@@ -1,6 +1,6 @@
 import { createReducer, on } from "@ngrx/store";
-import { Note } from "./note.model";
-import { createNoteSucess, findNoteById, loadNotesSucess, resetNote, removeSelectedNote, selectNote } from "./note.actions";
+import { Note } from "../../models/note.model";
+import { createNoteFailure, createNoteSucess, loadNoteById, loadNotesSucess, loadState, removeSelectedNote, resetLoadNote, selectNote, updateNoteFailure, updateNoteSucess } from "./note.actions";
 
 
 
@@ -18,12 +18,17 @@ export const initialState: State = {
     description: `
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ornare mollis semper. Nulla blandit imperdiet accumsan. Proin facilisis turpis posuere lacus sodales, eget tempus orci dapibus. 
     `,
-    emojiRef: 'Deport'
+    emojiRef: 'initial'
   }
 }
 
 export const notesReducer = createReducer(
   initialState,
+
+  on(loadState, (state, { savedState }) => {
+    return { ...savedState };
+  }),
+
   on(loadNotesSucess, (state, { notes }) => {
     return { ...state, notes };
   }),
@@ -35,26 +40,44 @@ export const notesReducer = createReducer(
     };
   }),
   on(removeSelectedNote, (state) => {
-    //console.log("Note unselected");
-    return { ...state, noteSelectedId: 0 }
+    return { ...state, noteSelectedId: 0 };
   }),
 
-  on(findNoteById, (state, { id }) => {
+  on(loadNoteById, (state, { id }) => {
     const note = state.notes.find(n => n.id === id) || initialState.note;
     return { ...state, note };
   }),
 
-  on(resetNote, (state) => {
-    return { ...state, note: initialState.note }
+  on(resetLoadNote, (state) => {
+    return { ...state, note: initialState.note };
   }),
 
   //! CRUD BACKEND
+
   //Create
   on(createNoteSucess, (state, { newNote }) => {
-    return { ...state, notes: [...state.notes, { ...newNote }] }
-  })
+    return { ...state, notes: [...state.notes, { ...newNote }] };
+  }),
 
+  on(createNoteFailure, (state, { status, description }) => {
+    console.log(`[Error Create] status: ${status} description: ${description}`);
+    return { ...state };
+  }),
 
+  //Update
+  on(updateNoteSucess, (state, { updatedNote }) => {
+    return {
+      ...state,
+      notes: state.notes.map((note: Note) =>
+        note.id === updatedNote.id ? { ...note, title: updatedNote.title, description: updatedNote.description } : note
+      )
+    };
+  }),
+
+  on(updateNoteFailure, (state, { status, description }) => {
+    console.log(`[Error Update] status: ${status} description: ${description}`);
+    return { ...state };
+  }),
 
 
 );

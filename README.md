@@ -13,6 +13,8 @@
 
 
 ### Avances
-![getnotes](./public/avances-img/api/get-notes-backend-reducer.png)
-![createnotes](./public/avances-img/api/ezgif-31623036d9240d.gif)
+![updatenotes](./public/avances-img/api/avance-2-api.gif)
+![createnotes](./public/avances-img/api/avance-1-api.gif)
+
+
 
