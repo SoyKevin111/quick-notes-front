@@ -30,6 +30,10 @@ export class NoteService {
     return this.http.put<Note>(`${this.apiUrl}/notes/${note.id}`, note);
   }
 
+  deleteNote(id: number): void {
+    this.http.delete(`${this.apiUrl}/notes/${id}`);
+  }
+
   extractProtocol(state: string): number | null {
     const match = state.match(/\d+/);
     return match ? parseInt(match[0], 10) : null;

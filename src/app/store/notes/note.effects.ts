@@ -6,7 +6,7 @@ import { LocalStorageService } from "../../services/local-storage.service";
 import { NoteService } from "../../services/note.service";
 import { NotificationService } from "../../services/notification.service";
 import { handleError } from "../../utils/handler.error.";
-import { createNote, createNoteFailure, createNoteSucess, loadNotesFailure, loadNotesSucess, loadState, updateNote, updateNoteFailure, updateNoteSucess } from "./note.actions";
+import { catchNoteFailure, createNote, createNoteSucess, loadNotesFailure, loadNotesSucess, loadState, updateNote, updateNoteSucess } from "./note.actions";
 
 
 @Injectable()
@@ -69,7 +69,7 @@ export class NoteEffects {
 							map((createdNote) => {
 								return createNoteSucess({ newNote: createdNote });
 							}),
-							catchError((error) => handleError(error, createNoteFailure))
+							catchError((error) => handleError(error, catchNoteFailure))
 						)
 				})
 
@@ -80,12 +80,12 @@ export class NoteEffects {
 		() =>
 			this.actions$.pipe(
 				ofType(updateNote),
-				switchMap(({ updateNote}) => {
-						return this.noteService.updateNote(updateNote)
+				switchMap(({ updateNote }) => {
+					return this.noteService.updateNote(updateNote)
 						.pipe(
-						map((updatedNote) => updateNoteSucess({ updatedNote: updatedNote })),
-						catchError((error) => handleError(error, updateNoteFailure))
-					);
+							map((updatedNote) => updateNoteSucess({ updatedNote: updatedNote })),
+							catchError((error) => handleError(error, catchNoteFailure))
+						);
 				})
 			)
 	)
@@ -115,7 +115,7 @@ export class NoteEffects {
 		() =>
 			this.actions$
 				.pipe(
-					ofType(createNoteFailure, updateNoteFailure),
+					ofType(catchNoteFailure),
 					tap(({ status, description }) => {
 						this.notificationService.showError(status, description);
 					})
