@@ -4,9 +4,10 @@ import { RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { ModalService } from '../../services/modal.service';
-import { Note, removeSelectedNote, resetLoadNote, selectSelectedNoteId } from '../../store/notes';
+import { deleteNote, Note, removeSelectedNote, resetLoadNote, selectSelectedNoteId } from '../../store/notes';
 import { CardNoteComponent } from '../card-note/card-note.component';
 import { ModalCreateNotesComponent } from '../modals/modal-create-notes/modal-create-notes.component';
+import { NotificationService } from '../../services/notification.service';
 
 @Component({
   selector: 'app-managed-cards',
@@ -18,6 +19,7 @@ import { ModalCreateNotesComponent } from '../modals/modal-create-notes/modal-cr
 export class ManagedCardsComponent implements OnInit, OnDestroy {
 
   private modalService = inject(ModalService);
+  private notificationService = inject(NotificationService);
   private store = inject(Store);
   selectedNoteId: number | null = null;
   notes$: Note[] = [];
@@ -33,6 +35,7 @@ export class ManagedCardsComponent implements OnInit, OnDestroy {
       }),
       this.store.select(selectSelectedNoteId).subscribe(id => {
         this.selectedNoteId = id;
+
       })
     );
   }
@@ -49,5 +52,12 @@ export class ManagedCardsComponent implements OnInit, OnDestroy {
   createNoteModal() {
     this.store.dispatch(removeSelectedNote());
     this.modalService.open(ModalCreateNotesComponent);
+  }
+
+  deleteNote() {
+    if (this.selectedNoteId && this.selectedNoteId > 0) {
+      this.notificationService.showConfirmationDelete(this.selectedNoteId || 0);
+      //this.store.dispatch(removeSelectedNote())
+    }
   }
 }

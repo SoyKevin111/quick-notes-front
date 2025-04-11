@@ -6,7 +6,7 @@ import { LocalStorageService } from "../../services/local-storage.service";
 import { NoteService } from "../../services/note.service";
 import { NotificationService } from "../../services/notification.service";
 import { handleError } from "../../utils/handler.error.";
-import { catchNoteFailure, createNote, createNoteSucess, loadNotesFailure, loadNotesSucess, loadState, updateNote, updateNoteSucess } from "./note.actions";
+import { catchNoteFailure, createNote, createNoteSucess, deleteNote, deleteNoteSucess, loadNotesFailure, loadNotesSucess, loadState, updateNote, updateNoteSucess } from "./note.actions";
 
 
 @Injectable()
@@ -87,6 +87,19 @@ export class NoteEffects {
 							catchError((error) => handleError(error, catchNoteFailure))
 						);
 				})
+			)
+	)
+
+	deleteNote$ = createEffect(
+		() =>
+			this.actions$.pipe(
+				ofType(deleteNote),
+				switchMap(({ id }) =>
+					this.noteService.deleteNote(id).pipe(
+						map(() => deleteNoteSucess({ id })),
+						catchError(error => handleError(error, catchNoteFailure))
+					)
+				)
 			)
 	)
 

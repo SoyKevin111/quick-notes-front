@@ -68,11 +68,16 @@ export const updateNoteSucess = createAction(
 	'[Note] Update note sucess',
 	props<{ updatedNote: Note }>()
 )
-/* export const updateNoteFailure = createAction(
-	'[Note] update note failure',
-	props<{ status: string, description: string }>()
-) */
 
+//?Delete
+export const deleteNote = createAction(
+	'[Note] Delete note',
+	props<{ id: number }>()
+)
+export const deleteNoteSucess = createAction(
+	'[Note] Delete note sucess',
+	props<{ id: number }>()
+)
 
 //?Catch error
 export const catchNoteFailure = createAction(
