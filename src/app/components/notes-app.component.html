@@ -1,12 +1,14 @@
-<div class="container-principal flex items-center justify-center h-screen">
-	<div class="h-[90%] w-full  flex flex-col items-center">
-		<div class=" noteHeader py-4 flex justify-center items-start">
-			<h1 [routerLink]="['/notes']" class="font-bold my- text-[1.5rem] cursor-pointer">
-				CRUD NOTES
-			</h1>
-		</div>
-		<div class=" h-[90%] ">
-			<router-outlet></router-outlet>
-		</div>
+<div class="h-screen w-full flex flex-col items-center bg-white shadow-xl rounded-xl border border-yellow-200">
+
+	<div class="noteHeader py-4 flex justify-center items-start w-full border-b border-yellow-300 bg-yellow-100">
+		<h1 [routerLink]="['/notes']"
+			class="font-bold text-[1.5rem] cursor-pointer text-yellow-800 hover:text-yellow-600 transition">
+			📝 CRUD NOTES
+		</h1>
 	</div>
+
+	<div class="h-full w-[600px] px-4 py-2 overflow-y-auto pt-[3rem]">
+		<router-outlet></router-outlet>
+	</div>
+
 </div>

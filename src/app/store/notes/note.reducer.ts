@@ -1,6 +1,6 @@
 import { createReducer, on } from "@ngrx/store";
 import { Note } from "../../models/note.model";
-import { createNoteFailure, createNoteSucess, loadNoteById, loadNotesSucess, loadState, removeSelectedNote, resetLoadNote, selectNote, updateNoteFailure, updateNoteSucess } from "./note.actions";
+import { catchNoteFailure, createNoteSucess, deleteNoteSucess, loadNoteById, loadNotesSucess, loadState, removeSelectedNote, resetLoadNote, selectNote, updateNoteSucess } from "./note.actions";
 
 
 
@@ -59,11 +59,6 @@ export const notesReducer = createReducer(
     return { ...state, notes: [...state.notes, { ...newNote }] };
   }),
 
-  on(createNoteFailure, (state, { status, description }) => {
-    console.log(`[Error Create] status: ${status} description: ${description}`);
-    return { ...state };
-  }),
-
   //Update
   on(updateNoteSucess, (state, { updatedNote }) => {
     return {
@@ -74,10 +69,21 @@ export const notesReducer = createReducer(
     };
   }),
 
-  on(updateNoteFailure, (state, { status, description }) => {
+  //Delete
+
+  on(deleteNoteSucess, (state, { id }) => {
+    return {
+      ...state,
+      noteSelectedId: 0,
+      notes: state.notes.filter(note => note.id !== id)
+    }
+  }),
+
+  on(catchNoteFailure, (state, { status, description }) => {
     console.log(`[Error Update] status: ${status} description: ${description}`);
     return { ...state };
   }),
+
 
 
 );

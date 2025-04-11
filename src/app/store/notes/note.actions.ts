@@ -7,8 +7,8 @@ import { State } from "./note.reducer";
 
 // Acción para cargar el estado completo desde localStorage
 export const loadState = createAction(
-  '[Note] Load State',
-  props<{ savedState: State }>()
+	'[Note] Load State',
+	props<{ savedState: State }>()
 );
 
 
@@ -54,21 +54,33 @@ export const createNoteSucess = createAction(
 	'[Note] Create note sucess',
 	props<{ newNote: Note }>()
 );
-export const createNoteFailure = createAction(
+/* export const createNoteFailure = createAction(
 	'[Note] Create note failure',
-	props<{ status: string , description: string}>()
-)
+	props<{ status: string, description: string }>()
+) */
 
 //?Update
 export const updateNote = createAction(
 	'[Note] Update note',
-	props<{updateNote: Note}>()
+	props<{ updateNote: Note }>()
 )
 export const updateNoteSucess = createAction(
 	'[Note] Update note sucess',
-	props<{updatedNote: Note}>()
+	props<{ updatedNote: Note }>()
 )
-export const updateNoteFailure = createAction(
-	'[Note] update note failure',
-	props<{ status: string , description: string}>()
+
+//?Delete
+export const deleteNote = createAction(
+	'[Note] Delete note',
+	props<{ id: number }>()
+)
+export const deleteNoteSucess = createAction(
+	'[Note] Delete note sucess',
+	props<{ id: number }>()
+)
+
+//?Catch error
+export const catchNoteFailure = createAction(
+	'[Note] catch note failure',
+	props<{ status: string, description: string }>()
 )
